@@ -2,19 +2,26 @@ package user
 
 import (
 	"encoding/json"
+	"fmt"
 	"net/http"
 	"strconv"
 
 	"github.com/gorilla/mux"
 	"github.com/rajesh4b8/users-api-batch4/src/domain/users"
+	"github.com/rajesh4b8/users-api-batch4/src/logger"
 	"github.com/rajesh4b8/users-api-batch4/src/services"
 	"github.com/rajesh4b8/users-api-batch4/src/utils/errors"
+)
+
+var (
+	log = logger.GetLogger()
 )
 
 func CreateUserHandler(w http.ResponseWriter, r *http.Request) {
 	var user users.User
 	err := json.NewDecoder(r.Body).Decode(&user)
 	if err != nil {
+		log.Error(fmt.Sprintf("Error parsing the body \n%v", r.Body))
 		errors.NewBadRequestError("Request body is not a valid json").HandleError(w)
 		return
 	}

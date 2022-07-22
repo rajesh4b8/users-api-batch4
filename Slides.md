@@ -18,3 +18,11 @@
 ### Assignment 2
 
 - Validate email id when creating user
+
+### Assignment 3
+
+- Delete user
+    - use http method `DELETE`
+    - Add a new endpoint
+    - Delete the user from usersDB map
+    - if user not found in the map then return error code 404
