@@ -16,8 +16,7 @@ http://localhost:8080/users/notid
 POST http://localhost:8080/users
 
 {
-  "id": 2,
   "first_name": "Rajesh",
   "last_name": "Reddy",
-  "age": 12,
   "email_id": "rajesh.reddy@test.com"
+}

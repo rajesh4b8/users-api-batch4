@@ -26,3 +26,7 @@
     - Add a new endpoint
     - Delete the user from usersDB map
     - if user not found in the map then return error code 404
+
+### Assignment 4
+
+- Get user from DB
