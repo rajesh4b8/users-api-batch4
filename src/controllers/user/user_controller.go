@@ -15,9 +15,23 @@ import (
 
 var (
 	log = logger.GetLogger()
+	// userService = services.NewUserService()
 )
 
-func CreateUserHandler(w http.ResponseWriter, r *http.Request) {
+func NewUserController(userService services.UserServiceInterface) userControllerInterface {
+	return &userController{userService}
+}
+
+type userControllerInterface interface {
+	CreateUserHandler(w http.ResponseWriter, r *http.Request)
+	ReadUserHandler(w http.ResponseWriter, r *http.Request)
+}
+
+type userController struct {
+	userService services.UserServiceInterface
+}
+
+func (c *userController) CreateUserHandler(w http.ResponseWriter, r *http.Request) {
 	var user users.User
 	err := json.NewDecoder(r.Body).Decode(&user)
 	if err != nil {
@@ -26,7 +40,7 @@ func CreateUserHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	u, restErr := services.CreateUser(user)
+	u, restErr := c.userService.CreateUser(user)
 	if restErr != nil {
 		restErr.HandleError(w)
 		return
@@ -37,7 +51,7 @@ func CreateUserHandler(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(u)
 }
 
-func ReadUserHandler(w http.ResponseWriter, r *http.Request) {
+func (c *userController) ReadUserHandler(w http.ResponseWriter, r *http.Request) {
 	// Getting the parameters
 	vars := mux.Vars(r)
 
@@ -48,7 +62,7 @@ func ReadUserHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	user, restErr := services.GetUser(userId)
+	user, restErr := c.userService.GetUser(userId)
 	if restErr != nil {
 		restErr.HandleError(w)
 		return
